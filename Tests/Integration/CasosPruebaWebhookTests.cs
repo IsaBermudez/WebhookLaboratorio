@@ -10,10 +10,9 @@ using Evento = recepcionEventosApi.Entities.Evento;
 
 namespace Tests.Integration;
 
-/// <summary>Casos de prueba obligatorios CP-001 a CP-006 (ver CasosPrueba_Webhook_v2.xlsx).</summary>
 public class CasosPruebaWebhookTests : IntegrationTestBase
 {
-    // ---------- CP-001: recepción exitosa de webhook (emisor -> receptor -> BD) ----------
+    // CP-001: recepción exitosa de webhook (emisor => receptor => BD) 
     [Fact]
     public async Task CP001_RecepcionExitosaDeWebhook()
     {
@@ -35,11 +34,11 @@ public class CasosPruebaWebhookTests : IntegrationTestBase
         consulta.Should().ContainSingle(u => u.Email == "abcde@gmail.com");
     }
 
-    // ---------- CP-002: webhook inválido ----------
+    // CP-002: webhook inválido 
     [Fact]
     public async Task CP002_WebhookInvalido_Devuelve400YNoPersiste()
     {
-        // Cuerpo del Excel: eventType vacío, nombre vacío y email inválido (correctamente firmado).
+        // Cuerpo del Excel 
         var body = CrearCuerpoWebhook(nombre: "", email: "correo-invalido", eventType: "");
 
         var respuesta = await EnviarWebhookAsync(body, Firmar(body));
@@ -62,7 +61,7 @@ public class CasosPruebaWebhookTests : IntegrationTestBase
         TotalEventos().Should().Be(0);
     }
 
-    // ---------- CP-003: evento duplicado ----------
+    // CP-003: evento duplicado 
     [Fact]
     public async Task CP003_EventoDuplicado_PrimerEnvio200SegundoEnvio409()
     {
@@ -80,7 +79,7 @@ public class CasosPruebaWebhookTests : IntegrationTestBase
         TotalUsuarios().Should().Be(1);
     }
 
-    // ---------- CP-004: receptor no disponible ----------
+    // CP-004: receptor no disponible
     [Fact]
     public async Task CP004_ReceptorNoDisponible_ErrorGestionadoCon503()
     {
@@ -97,7 +96,7 @@ public class CasosPruebaWebhookTests : IntegrationTestBase
         TotalEventos().Should().Be(0);
     }
 
-    // ---------- CP-005: persistencia correcta ----------
+    // CP-005: persistencia correcta
     [Fact]
     public async Task CP005_PersistenciaCorrecta_IdsGeneradosPorLaBaseDeDatos()
     {
@@ -162,7 +161,7 @@ public class CasosPruebaWebhookTests : IntegrationTestBase
         esIdentity["Eventos"].Should().Be(1, "Eventos.Id debe ser IDENTITY(1,1)");
     }
 
-    // ---------- CP-006: webhook sin autenticación ----------
+    // CP-006: webhook sin autenticación
     [Fact]
     public async Task CP006_SinCabeceraXSignature_Devuelve401YNoPersiste()
     {
@@ -200,7 +199,7 @@ public class CasosPruebaWebhookTests : IntegrationTestBase
         TotalUsuarios().Should().Be(0);
     }
 
-    // ---------- Consultas y manejo global de errores ----------
+    // Consultas y manejo global de errores
     [Fact]
     public async Task ConsultarEventos_DevuelveLosEventosRegistrados()
     {

@@ -10,7 +10,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Los IDs los genera SQL Server: IDENTITY(1,1). Nunca se asignan desde código.
         modelBuilder.Entity<Usuario>(e =>
         {
             e.ToTable("Usuarios");

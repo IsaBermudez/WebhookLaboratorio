@@ -4,7 +4,6 @@ namespace Shared.Helpers;
 
 public static class UsuarioValidator
 {
-    /// <summary>Devuelve el mensaje de error, o null si los datos son válidos.</summary>
     public static string? ObtenerError(string? nombre, string? email)
     {
         if (string.IsNullOrWhiteSpace(nombre))

@@ -8,7 +8,6 @@ using Shared.WebhookModels;
 
 namespace gestionUsuariosApi.Clients;
 
-/// <summary>Cliente HTTP hacia recepcionEventosApi. Traduce los fallos de comunicación a ApiException.</summary>
 public class RecepcionEventosClient(HttpClient http)
 {
     public async Task<WebhookProcesadoResponse> EnviarUsuarioCreadoAsync(string payload, string firma, CancellationToken ct)

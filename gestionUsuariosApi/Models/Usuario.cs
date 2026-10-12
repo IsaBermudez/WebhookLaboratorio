@@ -1,6 +1,5 @@
 namespace gestionUsuariosApi.Models;
 
-/// <summary>Vista de solo lectura de la tabla Usuarios (la escritura es del receptor).</summary>
 public class Usuario
 {
     public int Id { get; set; }

@@ -6,7 +6,6 @@ using Shared.Helpers;
 
 namespace recepcionEventosApi.Services;
 
-/// <summary>Orden de validación: 1) firma HMAC (401)  2) estructura (400).</summary>
 public class ValidacionWebhookService(HmacAuthenticationService hmac)
 {
     public UsuarioCreadoWebhookDto Validar(string body, string? firma)

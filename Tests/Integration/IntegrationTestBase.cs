@@ -13,13 +13,6 @@ using Shared.Helpers;
 using Shared.WebhookModels;
 
 namespace Tests.Integration;
-
-/// <summary>
-/// Cada prueba crea su propia BD en SQL Server (WebhookLab_Test_&lt;guid&gt;) y su propio receptor, y la elimina al
-/// terminar: no hay estado compartido entre pruebas.
-/// El servidor se toma de la variable de entorno WEBHOOK_TEST_SQLSERVER (cadena de conexión sin Database);
-/// por defecto se usa LocalDB: Server=(localdb)\MSSQLLocalDB;Trusted_Connection=True;TrustServerCertificate=True
-/// </summary>
 public abstract class IntegrationTestBase : IDisposable
 {
     private readonly List<IDisposable> _recursos = new();
@@ -28,12 +21,10 @@ public abstract class IntegrationTestBase : IDisposable
     private const string ServidorPorDefecto =
         "Server=(localdb)\\MSSQLLocalDB;Trusted_Connection=True;TrustServerCertificate=True";
 
-    /// <summary>Cadena de conexión de la BD temporal de esta prueba.</summary>
     protected string CadenaConexion { get; }
     protected ReceptorFactory Receptor { get; }
     protected HttpClient ReceptorClient { get; }
 
-    /// <summary>Secreto HMAC efectivo del receptor (se lee de su configuración real, no se asume).</summary>
     protected string Secret { get; }
 
     protected IntegrationTestBase()
@@ -49,8 +40,6 @@ public abstract class IntegrationTestBase : IDisposable
         ReceptorClient = Receptor.CreateClient(); // arranca el host: crea la BD temporal y las tablas
         Secret = Receptor.Services.GetRequiredService<IOptions<WebhookOptions>>().Value.Secret;
     }
-
-    /// <summary>Cliente de gestionUsuariosApi cuyo webhook va (por defecto) al receptor real en memoria.</summary>
     protected HttpClient CrearClienteEmisor(Func<HttpMessageHandler>? handlerReceptor = null)
     {
         var emisor = new EmisorFactory(CadenaConexion, handlerReceptor ?? (() => Receptor.Server.CreateHandler()));
@@ -81,7 +70,6 @@ public abstract class IntegrationTestBase : IDisposable
 
     protected string Firmar(string body) => HmacHelper.CalcularFirma(body, Secret);
 
-    /// <summary>Envía el body tal cual al receptor. Con firma null no se envía la cabecera X-Signature.</summary>
     protected async Task<HttpResponseMessage> EnviarWebhookAsync(string body, string? firma)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, "/" + WebhookConstants.RutaRecibirEventoUsuarioCreado)
@@ -111,7 +99,6 @@ public abstract class IntegrationTestBase : IDisposable
     }
 }
 
-/// <summary>Simula recepcionEventosApi detenida: la conexión falla.</summary>
 public sealed class ReceptorCaidoHandler : HttpMessageHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) =>

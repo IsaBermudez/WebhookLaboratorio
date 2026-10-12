@@ -16,8 +16,6 @@ public class EventoService(UsuarioRepository usuarios, EventoRepository eventos,
         var nombre = dto.Data.Nombre.Trim();
         var email = dto.Data.Email.Trim();
 
-        // El esquema aprobado no guarda un identificador del evento: un evento duplicado
-        // es el que intenta registrar un usuario cuyo email ya existe.
         if (await usuarios.ExistePorEmailAsync(email, ct))
             throw new ApiException(409, ErrorCodes.EventoDuplicado, "El evento ya fue procesado: el usuario ya existe.");
 
@@ -32,7 +30,7 @@ public class EventoService(UsuarioRepository usuarios, EventoRepository eventos,
 
         usuarios.Agregar(usuario);
         eventos.Agregar(evento);
-        await db.SaveChangesAsync(ct); // un solo SaveChanges = ambos INSERT en una transacción; SQL Server asigna los IDs
+        await db.SaveChangesAsync(ct);
 
         return new WebhookProcesadoResponse
         {

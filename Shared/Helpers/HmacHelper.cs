@@ -3,7 +3,6 @@ using System.Text;
 
 namespace Shared.Helpers;
 
-/// <summary>HMAC-SHA256 sobre el body exacto. La firma viaja en hexadecimal minúscula en X-Signature.</summary>
 public static class HmacHelper
 {
     public static string CalcularFirma(string payload, string secret)
@@ -12,7 +11,6 @@ public static class HmacHelper
         return Convert.ToHexString(hash).ToLowerInvariant();
     }
 
-    /// <summary>Recalcula el HMAC y lo compara en tiempo constante con la firma recibida.</summary>
     public static bool FirmaEsValida(string body, string secret, string? firmaRecibida)
     {
         if (string.IsNullOrWhiteSpace(firmaRecibida))

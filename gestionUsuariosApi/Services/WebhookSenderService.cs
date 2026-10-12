@@ -8,7 +8,6 @@ using Shared.WebhookModels;
 
 namespace gestionUsuariosApi.Services;
 
-/// <summary>Construye el payload webhook, lo firma con HMAC-SHA256 y lo envía.</summary>
 public class WebhookSenderService(RecepcionEventosClient client, IOptions<WebhookOptions> options)
 {
     public Task<WebhookProcesadoResponse> EnviarUsuarioCreadoAsync(CrearUsuarioRequest usuario, CancellationToken ct)

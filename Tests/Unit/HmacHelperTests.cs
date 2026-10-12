@@ -7,7 +7,6 @@ public class HmacHelperTests
 {
     private const string Secret = "secret";
     private const string Payload = "hello";
-    // HMAC-SHA256("hello", clave "secret") calculado de forma independiente.
     private const string FirmaConocida = "88aab3ede8d3adf94d26ab90d3bafd4a2083070c3bcce9c014ee04a443847c0b";
 
     [Fact]

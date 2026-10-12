@@ -3,7 +3,6 @@ using gestionUsuariosApi.Models;
 
 namespace gestionUsuariosApi.Configuration;
 
-/// <summary>Acceso de solo lectura a la BD compartida para consultarUsuarios.</summary>
 public class GestionUsuariosDbContext(DbContextOptions<GestionUsuariosDbContext> options) : DbContext(options)
 {
     public DbSet<Usuario> Usuarios => Set<Usuario>();

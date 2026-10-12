@@ -6,10 +6,6 @@ using Shared.Helpers;
 
 namespace Shared.Middleware;
 
-/// <summary>
-/// Middleware global: convierte excepciones (y respuestas 4xx/5xx vacías) en
-/// { "mensaje": "...", "codigo": "..." } para 400, 401, 404, 409 y 500.
-/// </summary>
 public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {
     public async Task InvokeAsync(HttpContext context)
@@ -18,7 +14,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         {
             await next(context);
 
-            // 404 de ruta inexistente, etc.: respuestas de error sin cuerpo.
+            // 404 de ruta inexistente
             var status = context.Response.StatusCode;
             if (status >= 400 && !context.Response.HasStarted
                 && context.Response.ContentLength is null
